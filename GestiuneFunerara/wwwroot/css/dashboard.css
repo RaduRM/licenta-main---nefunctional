@@ -1,0 +1,81 @@
+﻿.dashboard-title {
+    text-align: center;
+    margin-bottom: 1.5rem;
+    font-size: 2rem;
+    font-weight: 600;
+    color: #333;
+    text-shadow: 1px 1px 2px rgba(0,0,0,0.1);
+}
+
+.dashboard-table-container {
+    overflow-x: auto;
+    background: rgba(255, 255, 255, 0.95);
+    border-radius: 1rem;
+    box-shadow: 0 4px 16px rgba(0, 0, 0, 0.15);
+    padding: 1rem;
+}
+
+.dashboard-table {
+    width: 100%;
+    border-collapse: collapse;
+}
+
+    .dashboard-table th,
+    .dashboard-table td {
+        padding: 0.75rem 1rem;
+        text-align: left;
+        border-bottom: 1px solid #ddd;
+    }
+
+    .dashboard-table th {
+        background-color: #212529;
+        color: #fff;
+    }
+
+    .dashboard-table tbody tr:hover {
+        background-color: rgba(255, 215, 0, 0.15);
+        transition: background-color 0.2s;
+    }
+
+.badge {
+    display: inline-block;
+    padding: 0.25rem 0.5rem;
+    border-radius: 0.3rem;
+    font-size: 0.9rem;
+    font-weight: 500;
+}
+
+.badge-success {
+    background-color: #28a745;
+    color: #fff;
+}
+
+.badge-warning {
+    background-color: #ffc107;
+    color: #212529;
+}
+
+.table-input,
+.table-select,
+.table-textarea {
+    width: 100%;
+    min-width: 150px; 
+}
+.btn-report {
+    transition: background-color 0.3s ease, transform 0.3s ease;
+}
+
+    .btn-report:hover {
+        background-color: #ffd700 !important;
+        color: #000 !important;
+        transform: scale(1.05);
+        cursor: pointer;
+    }
+
+.card {
+    transition: transform 0.2s ease-in-out;
+}
+
+    .card:hover {
+        transform: translateY(-4px);
+    }

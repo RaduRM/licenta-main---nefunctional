@@ -1,0 +1,77 @@
+﻿@page "/confirmare-precomanda/{metoda}"
+@inject GestiuneFuneraraContext Db
+@inject NavigationManager Navigation
+@using GestiuneFunerara.Models
+@using GestiuneFunerara.Services
+@using Microsoft.EntityFrameworkCore
+@inject ReportService ReportService
+@inject EmailService EmailService
+
+@code {
+    [Parameter] public string? metoda { get; set; }
+    private string codConfirmare = "";
+    private string mesajConfirmare = "";
+    private string culoareMesaj = "text-success";
+
+    private async Task TrimiteCod()
+    {
+        // Căutăm precomanda folosind codul de confirmare
+        var precomanda = await Db.Precomenzis
+            .Include(p => p.id_pachetefunerareNavigation) // Menținem Include pentru pachetul funerar
+            .Include(p => p.id_produsNavigation) // Menținem Include pentru produs
+            .FirstOrDefaultAsync(p => p.CodConfirmare == codConfirmare);
+
+        if (precomanda != null)
+        {
+            // Dacă precomanda este găsită, schimbăm starea acesteia în "Confirmată"
+            precomanda.Stare = "Confirmată";
+            await Db.SaveChangesAsync();
+
+            // Generăm un PDF cu detaliile precomenzii
+            QuestPDF.Settings.License = QuestPDF.Infrastructure.LicenseType.Community;
+            var pdfRaport = await ReportService.GenerateRaportPrecomandaPdf(precomanda.id_precomenzi);
+
+            // Trimitem un e-mail administratorului
+            await EmailService.TrimiteEmailAdminAsync("radurm2@gmail.com",
+                $"Precomandă nouă #{precomanda.id_precomenzi} Confirmată",
+                $"A fost confirmată precomanda #{precomanda.id_precomenzi}. Vezi raportul atașat.", pdfRaport);
+
+            // Mesaj de succes
+            mesajConfirmare = "Ați confirmat precomanda! Veți fi contactat de către un agent în maxim 5 minute!";
+            culoareMesaj = "text-success";
+        }
+        else
+        {
+            // Dacă codul de confirmare nu există sau este incorect, afișăm un mesaj de eroare
+            mesajConfirmare = "Cod incorect. Te rugăm să încerci din nou!";
+            culoareMesaj = "text-danger";
+        }
+    }
+
+}
+
+<head>
+    <link href="/css/confirmariprecomenzi.css" rel="stylesheet" />
+</head>
+
+<div class="container text-center my-5 confirm-container">
+    @if (metoda == "telefonic")
+    {
+        <h2 class="text-success mb-3">Veți fi contactat telefonic pentru confirmarea precomenzii.</h2>
+    }
+    else if (metoda == "sms" || metoda == "email")
+    {
+        <h2 class="mb-3">Introduceți codul de confirmare primit prin @metoda:</h2>
+        <input type="text" class="form-control mb-3" placeholder="Cod de confirmare" @bind="codConfirmare" />
+        <button class="btn btn-vezi-pachete" @onclick="TrimiteCod">Confirmă</button>
+
+        @if (!string.IsNullOrEmpty(mesajConfirmare))
+        {
+            <p class="mt-3 mesaj-confirmare @culoareMesaj">@mesajConfirmare</p>
+        }
+    }
+    else
+    {
+        <p>Metodă necunoscută!</p>
+    }
+</div>

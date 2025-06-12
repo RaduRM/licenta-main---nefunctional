@@ -1,0 +1,277 @@
+{
+  "Version": 1,
+  "WorkspaceRootPath": "C:\\Users\\radud\\Desktop\\LICENTA\\licenta-main - nefunctional\\",
+  "Documents": [
+    {
+      "AbsoluteMoniker": "D:0:0:{613D902F-7907-42DB-887D-85F52F6655A4}|GestiuneFunerara\\GestiuneFunerara.csproj|c:\\users\\radud\\desktop\\licenta\\licenta-main - nefunctional\\gestiunefunerara\\program.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{613D902F-7907-42DB-887D-85F52F6655A4}|GestiuneFunerara\\GestiuneFunerara.csproj|solutionrelative:gestiunefunerara\\program.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{613D902F-7907-42DB-887D-85F52F6655A4}|GestiuneFunerara\\GestiuneFunerara.csproj|c:\\users\\radud\\desktop\\licenta\\licenta-main - nefunctional\\gestiunefunerara\\services\\usersessionservice.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{613D902F-7907-42DB-887D-85F52F6655A4}|GestiuneFunerara\\GestiuneFunerara.csproj|solutionrelative:gestiunefunerara\\services\\usersessionservice.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{613D902F-7907-42DB-887D-85F52F6655A4}|GestiuneFunerara\\GestiuneFunerara.csproj|c:\\users\\radud\\desktop\\licenta\\licenta-main - nefunctional\\gestiunefunerara\\wwwroot\\js\\site.js||{14D17961-FE51-464D-9111-C4AF11D7D99A}",
+      "RelativeMoniker": "D:0:0:{613D902F-7907-42DB-887D-85F52F6655A4}|GestiuneFunerara\\GestiuneFunerara.csproj|solutionrelative:gestiunefunerara\\wwwroot\\js\\site.js||{14D17961-FE51-464D-9111-C4AF11D7D99A}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{613D902F-7907-42DB-887D-85F52F6655A4}|GestiuneFunerara\\GestiuneFunerara.csproj|c:\\users\\radud\\desktop\\licenta\\licenta-main - nefunctional\\gestiunefunerara\\pages\\index.razor||{40D31677-CBC0-4297-A9EF-89D907823A98}",
+      "RelativeMoniker": "D:0:0:{613D902F-7907-42DB-887D-85F52F6655A4}|GestiuneFunerara\\GestiuneFunerara.csproj|solutionrelative:gestiunefunerara\\pages\\index.razor||{40D31677-CBC0-4297-A9EF-89D907823A98}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{613D902F-7907-42DB-887D-85F52F6655A4}|GestiuneFunerara\\GestiuneFunerara.csproj|c:\\users\\radud\\desktop\\licenta\\licenta-main - nefunctional\\gestiunefunerara\\pages\\login.razor||{40D31677-CBC0-4297-A9EF-89D907823A98}",
+      "RelativeMoniker": "D:0:0:{613D902F-7907-42DB-887D-85F52F6655A4}|GestiuneFunerara\\GestiuneFunerara.csproj|solutionrelative:gestiunefunerara\\pages\\login.razor||{40D31677-CBC0-4297-A9EF-89D907823A98}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{613D902F-7907-42DB-887D-85F52F6655A4}|GestiuneFunerara\\GestiuneFunerara.csproj|c:\\users\\radud\\desktop\\licenta\\licenta-main - nefunctional\\gestiunefunerara\\pages\\error.cshtml||{40D31677-CBC0-4297-A9EF-89D907823A98}",
+      "RelativeMoniker": "D:0:0:{613D902F-7907-42DB-887D-85F52F6655A4}|GestiuneFunerara\\GestiuneFunerara.csproj|solutionrelative:gestiunefunerara\\pages\\error.cshtml||{40D31677-CBC0-4297-A9EF-89D907823A98}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{A2FE74E1-B743-11D0-AE1A-00A0C90FFFC3}|\u003CMiscFiles\u003E|C:\\Users\\radud\\AppData\\Roaming\\Microsoft\\UserSecrets\\d3664147-ddab-4863-8b6d-7be66aa79e49\\secrets.json||{90A6B3A7-C1A3-4009-A288-E2FF89E96FA0}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{613D902F-7907-42DB-887D-85F52F6655A4}|GestiuneFunerara\\GestiuneFunerara.csproj|c:\\users\\radud\\desktop\\licenta\\licenta-main - nefunctional\\gestiunefunerara\\gestiunefunerara.csproj||{FA3CD31E-987B-443A-9B81-186104E8DAC1}|",
+      "RelativeMoniker": "D:0:0:{613D902F-7907-42DB-887D-85F52F6655A4}|GestiuneFunerara\\GestiuneFunerara.csproj|solutionrelative:gestiunefunerara\\gestiunefunerara.csproj||{FA3CD31E-987B-443A-9B81-186104E8DAC1}|"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{613D902F-7907-42DB-887D-85F52F6655A4}|GestiuneFunerara\\GestiuneFunerara.csproj|c:\\users\\radud\\desktop\\licenta\\licenta-main - nefunctional\\gestiunefunerara\\appsettings.json||{90A6B3A7-C1A3-4009-A288-E2FF89E96FA0}",
+      "RelativeMoniker": "D:0:0:{613D902F-7907-42DB-887D-85F52F6655A4}|GestiuneFunerara\\GestiuneFunerara.csproj|solutionrelative:gestiunefunerara\\appsettings.json||{90A6B3A7-C1A3-4009-A288-E2FF89E96FA0}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{613D902F-7907-42DB-887D-85F52F6655A4}|GestiuneFunerara\\GestiuneFunerara.csproj|c:\\users\\radud\\desktop\\licenta\\licenta-main - nefunctional\\gestiunefunerara\\shared\\mainlayout.razor||{40D31677-CBC0-4297-A9EF-89D907823A98}",
+      "RelativeMoniker": "D:0:0:{613D902F-7907-42DB-887D-85F52F6655A4}|GestiuneFunerara\\GestiuneFunerara.csproj|solutionrelative:gestiunefunerara\\shared\\mainlayout.razor||{40D31677-CBC0-4297-A9EF-89D907823A98}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{613D902F-7907-42DB-887D-85F52F6655A4}|GestiuneFunerara\\GestiuneFunerara.csproj|c:\\users\\radud\\desktop\\licenta\\licenta-main - nefunctional\\gestiunefunerara\\pages\\admindashboard.razor||{40D31677-CBC0-4297-A9EF-89D907823A98}",
+      "RelativeMoniker": "D:0:0:{613D902F-7907-42DB-887D-85F52F6655A4}|GestiuneFunerara\\GestiuneFunerara.csproj|solutionrelative:gestiunefunerara\\pages\\admindashboard.razor||{40D31677-CBC0-4297-A9EF-89D907823A98}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{613D902F-7907-42DB-887D-85F52F6655A4}|GestiuneFunerara\\GestiuneFunerara.csproj|c:\\users\\radud\\desktop\\licenta\\licenta-main - nefunctional\\gestiunefunerara\\properties\\launchsettings.json||{90A6B3A7-C1A3-4009-A288-E2FF89E96FA0}",
+      "RelativeMoniker": "D:0:0:{613D902F-7907-42DB-887D-85F52F6655A4}|GestiuneFunerara\\GestiuneFunerara.csproj|solutionrelative:gestiunefunerara\\properties\\launchsettings.json||{90A6B3A7-C1A3-4009-A288-E2FF89E96FA0}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{A2FE74E1-B743-11D0-AE1A-00A0C90FFFC3}|\u003CMiscFiles\u003E|C:\\Program Files\\dotnet\\sdk\\9.0.300\\Sdks\\Microsoft.NET.Sdk.StaticWebAssets\\targets\\Microsoft.NET.Sdk.StaticWebAssets.targets||{FA3CD31E-987B-443A-9B81-186104E8DAC1}|"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{A2FE74E1-B743-11D0-AE1A-00A0C90FFFC3}|\u003CMiscFiles\u003E|C:\\Users\\radud\\.nuget\\packages\\microsoft.bcl.memory\\9.0.0\\buildTransitive\\netcoreapp2.0\\Microsoft.Bcl.Memory.targets||{FA3CD31E-987B-443A-9B81-186104E8DAC1}|"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{613D902F-7907-42DB-887D-85F52F6655A4}|GestiuneFunerara\\GestiuneFunerara.csproj|c:\\users\\radud\\desktop\\licenta\\licenta-main - nefunctional\\gestiunefunerara\\pages\\_layout.cshtml||{40D31677-CBC0-4297-A9EF-89D907823A98}",
+      "RelativeMoniker": "D:0:0:{613D902F-7907-42DB-887D-85F52F6655A4}|GestiuneFunerara\\GestiuneFunerara.csproj|solutionrelative:gestiunefunerara\\pages\\_layout.cshtml||{40D31677-CBC0-4297-A9EF-89D907823A98}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{613D902F-7907-42DB-887D-85F52F6655A4}|GestiuneFunerara\\GestiuneFunerara.csproj|c:\\users\\radud\\desktop\\licenta\\licenta-main - nefunctional\\gestiunefunerara\\pages\\_host.cshtml||{40D31677-CBC0-4297-A9EF-89D907823A98}",
+      "RelativeMoniker": "D:0:0:{613D902F-7907-42DB-887D-85F52F6655A4}|GestiuneFunerara\\GestiuneFunerara.csproj|solutionrelative:gestiunefunerara\\pages\\_host.cshtml||{40D31677-CBC0-4297-A9EF-89D907823A98}"
+    }
+  ],
+  "DocumentGroupContainers": [
+    {
+      "Orientation": 0,
+      "VerticalTabListWidth": 256,
+      "DocumentGroups": [
+        {
+          "DockedWidth": 200,
+          "SelectedChildIndex": 9,
+          "Children": [
+            {
+              "$type": "Document",
+              "DocumentIndex": 3,
+              "Title": "Index.razor",
+              "DocumentMoniker": "C:\\Users\\radud\\Desktop\\LICENTA\\licenta-main - nefunctional\\GestiuneFunerara\\Pages\\Index.razor",
+              "RelativeDocumentMoniker": "GestiuneFunerara\\Pages\\Index.razor",
+              "ToolTip": "C:\\Users\\radud\\Desktop\\LICENTA\\licenta-main - nefunctional\\GestiuneFunerara\\Pages\\Index.razor",
+              "RelativeToolTip": "GestiuneFunerara\\Pages\\Index.razor",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000759|",
+              "WhenOpened": "2025-06-12T21:34:39.186Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 2,
+              "Title": "site.js",
+              "DocumentMoniker": "C:\\Users\\radud\\Desktop\\LICENTA\\licenta-main - nefunctional\\GestiuneFunerara\\wwwroot\\js\\site.js",
+              "RelativeDocumentMoniker": "GestiuneFunerara\\wwwroot\\js\\site.js",
+              "ToolTip": "C:\\Users\\radud\\Desktop\\LICENTA\\licenta-main - nefunctional\\GestiuneFunerara\\wwwroot\\js\\site.js",
+              "RelativeToolTip": "GestiuneFunerara\\wwwroot\\js\\site.js",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.001646|",
+              "WhenOpened": "2025-06-12T21:32:58.606Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 7,
+              "Title": "GestiuneFunerara.csproj",
+              "DocumentMoniker": "C:\\Users\\radud\\Desktop\\LICENTA\\licenta-main - nefunctional\\GestiuneFunerara\\GestiuneFunerara.csproj",
+              "RelativeDocumentMoniker": "GestiuneFunerara\\GestiuneFunerara.csproj",
+              "ToolTip": "C:\\Users\\radud\\Desktop\\LICENTA\\licenta-main - nefunctional\\GestiuneFunerara\\GestiuneFunerara.csproj",
+              "RelativeToolTip": "GestiuneFunerara\\GestiuneFunerara.csproj",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000758|",
+              "WhenOpened": "2025-06-12T21:30:13.018Z"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 8,
+              "Title": "appsettings.json",
+              "DocumentMoniker": "C:\\Users\\radud\\Desktop\\LICENTA\\licenta-main - nefunctional\\GestiuneFunerara\\appsettings.json",
+              "RelativeDocumentMoniker": "GestiuneFunerara\\appsettings.json",
+              "ToolTip": "C:\\Users\\radud\\Desktop\\LICENTA\\licenta-main - nefunctional\\GestiuneFunerara\\appsettings.json",
+              "RelativeToolTip": "GestiuneFunerara\\appsettings.json",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAkAAABrAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.001642|",
+              "WhenOpened": "2025-06-12T17:42:36.208Z"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 9,
+              "Title": "MainLayout.razor",
+              "DocumentMoniker": "C:\\Users\\radud\\Desktop\\LICENTA\\licenta-main - nefunctional\\GestiuneFunerara\\Shared\\MainLayout.razor",
+              "RelativeDocumentMoniker": "GestiuneFunerara\\Shared\\MainLayout.razor",
+              "ToolTip": "C:\\Users\\radud\\Desktop\\LICENTA\\licenta-main - nefunctional\\GestiuneFunerara\\Shared\\MainLayout.razor",
+              "RelativeToolTip": "GestiuneFunerara\\Shared\\MainLayout.razor",
+              "ViewState": "AgIAACEAAAAAAAAAAAAAADIAAAAVAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000759|",
+              "WhenOpened": "2025-06-12T17:39:44.662Z"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 12,
+              "Title": "Microsoft.NET.Sdk.StaticWebAssets.targets",
+              "DocumentMoniker": "C:\\Program Files\\dotnet\\sdk\\9.0.300\\Sdks\\Microsoft.NET.Sdk.StaticWebAssets\\targets\\Microsoft.NET.Sdk.StaticWebAssets.targets",
+              "RelativeDocumentMoniker": "..\\..\\..\\..\\..\\Program Files\\dotnet\\sdk\\9.0.300\\Sdks\\Microsoft.NET.Sdk.StaticWebAssets\\targets\\Microsoft.NET.Sdk.StaticWebAssets.targets",
+              "ToolTip": "C:\\Program Files\\dotnet\\sdk\\9.0.300\\Sdks\\Microsoft.NET.Sdk.StaticWebAssets\\targets\\Microsoft.NET.Sdk.StaticWebAssets.targets",
+              "RelativeToolTip": "..\\..\\..\\..\\..\\Program Files\\dotnet\\sdk\\9.0.300\\Sdks\\Microsoft.NET.Sdk.StaticWebAssets\\targets\\Microsoft.NET.Sdk.StaticWebAssets.targets",
+              "ViewState": "AgIAAFcCAAAAAAAAAAAcwGwCAAA7AAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.003801|",
+              "WhenOpened": "2025-06-12T17:37:17.225Z"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 13,
+              "Title": "Microsoft.Bcl.Memory.targets",
+              "DocumentMoniker": "C:\\Users\\radud\\.nuget\\packages\\microsoft.bcl.memory\\9.0.0\\buildTransitive\\netcoreapp2.0\\Microsoft.Bcl.Memory.targets",
+              "RelativeDocumentMoniker": "..\\..\\..\\.nuget\\packages\\microsoft.bcl.memory\\9.0.0\\buildTransitive\\netcoreapp2.0\\Microsoft.Bcl.Memory.targets",
+              "ToolTip": "C:\\Users\\radud\\.nuget\\packages\\microsoft.bcl.memory\\9.0.0\\buildTransitive\\netcoreapp2.0\\Microsoft.Bcl.Memory.targets",
+              "RelativeToolTip": "..\\..\\..\\.nuget\\packages\\microsoft.bcl.memory\\9.0.0\\buildTransitive\\netcoreapp2.0\\Microsoft.Bcl.Memory.targets",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAMAAAAEAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.003801|",
+              "WhenOpened": "2025-06-12T17:35:22.229Z"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 11,
+              "Title": "launchSettings.json",
+              "DocumentMoniker": "C:\\Users\\radud\\Desktop\\LICENTA\\licenta-main - nefunctional\\GestiuneFunerara\\Properties\\launchSettings.json",
+              "RelativeDocumentMoniker": "GestiuneFunerara\\Properties\\launchSettings.json",
+              "ToolTip": "C:\\Users\\radud\\Desktop\\LICENTA\\licenta-main - nefunctional\\GestiuneFunerara\\Properties\\launchSettings.json",
+              "RelativeToolTip": "GestiuneFunerara\\Properties\\launchSettings.json",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.001642|",
+              "WhenOpened": "2025-06-12T17:34:39.806Z"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 1,
+              "Title": "UserSessionService.cs",
+              "DocumentMoniker": "C:\\Users\\radud\\Desktop\\LICENTA\\licenta-main - nefunctional\\GestiuneFunerara\\Services\\UserSessionService.cs",
+              "RelativeDocumentMoniker": "GestiuneFunerara\\Services\\UserSessionService.cs",
+              "ToolTip": "C:\\Users\\radud\\Desktop\\LICENTA\\licenta-main - nefunctional\\GestiuneFunerara\\Services\\UserSessionService.cs",
+              "RelativeToolTip": "GestiuneFunerara\\Services\\UserSessionService.cs",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2025-06-12T17:28:49.525Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 0,
+              "Title": "Program.cs",
+              "DocumentMoniker": "C:\\Users\\radud\\Desktop\\LICENTA\\licenta-main - nefunctional\\GestiuneFunerara\\Program.cs",
+              "RelativeDocumentMoniker": "GestiuneFunerara\\Program.cs",
+              "ToolTip": "C:\\Users\\radud\\Desktop\\LICENTA\\licenta-main - nefunctional\\GestiuneFunerara\\Program.cs",
+              "RelativeToolTip": "GestiuneFunerara\\Program.cs",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAgAAAAAAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2025-06-12T17:27:33.697Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 4,
+              "Title": "Login.razor",
+              "DocumentMoniker": "C:\\Users\\radud\\Desktop\\LICENTA\\licenta-main - nefunctional\\GestiuneFunerara\\Pages\\Login.razor",
+              "RelativeDocumentMoniker": "GestiuneFunerara\\Pages\\Login.razor",
+              "ToolTip": "C:\\Users\\radud\\Desktop\\LICENTA\\licenta-main - nefunctional\\GestiuneFunerara\\Pages\\Login.razor",
+              "RelativeToolTip": "GestiuneFunerara\\Pages\\Login.razor",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAAGAAAAAAAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000759|",
+              "WhenOpened": "2025-06-12T21:33:42.003Z"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 5,
+              "Title": "Error.cshtml",
+              "DocumentMoniker": "C:\\Users\\radud\\Desktop\\LICENTA\\licenta-main - nefunctional\\GestiuneFunerara\\Pages\\Error.cshtml",
+              "RelativeDocumentMoniker": "GestiuneFunerara\\Pages\\Error.cshtml",
+              "ToolTip": "C:\\Users\\radud\\Desktop\\LICENTA\\licenta-main - nefunctional\\GestiuneFunerara\\Pages\\Error.cshtml",
+              "RelativeToolTip": "GestiuneFunerara\\Pages\\Error.cshtml",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAABUAAAANAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000759|",
+              "WhenOpened": "2025-06-12T17:27:22.354Z"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 6,
+              "Title": "secrets.json",
+              "DocumentMoniker": "C:\\Users\\radud\\AppData\\Roaming\\Microsoft\\UserSecrets\\d3664147-ddab-4863-8b6d-7be66aa79e49\\secrets.json",
+              "RelativeDocumentMoniker": "..\\..\\..\\AppData\\Roaming\\Microsoft\\UserSecrets\\d3664147-ddab-4863-8b6d-7be66aa79e49\\secrets.json",
+              "ToolTip": "C:\\Users\\radud\\AppData\\Roaming\\Microsoft\\UserSecrets\\d3664147-ddab-4863-8b6d-7be66aa79e49\\secrets.json",
+              "RelativeToolTip": "..\\..\\..\\AppData\\Roaming\\Microsoft\\UserSecrets\\d3664147-ddab-4863-8b6d-7be66aa79e49\\secrets.json",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.001642|",
+              "WhenOpened": "2025-06-12T21:31:09.848Z"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 10,
+              "Title": "AdminDashboard.razor",
+              "DocumentMoniker": "C:\\Users\\radud\\Desktop\\LICENTA\\licenta-main - nefunctional\\GestiuneFunerara\\Pages\\AdminDashboard.razor",
+              "RelativeDocumentMoniker": "GestiuneFunerara\\Pages\\AdminDashboard.razor",
+              "ToolTip": "C:\\Users\\radud\\Desktop\\LICENTA\\licenta-main - nefunctional\\GestiuneFunerara\\Pages\\AdminDashboard.razor",
+              "RelativeToolTip": "GestiuneFunerara\\Pages\\AdminDashboard.razor",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAsAAAAHAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000759|",
+              "WhenOpened": "2025-06-12T17:27:18.082Z"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 14,
+              "Title": "_Layout.cshtml",
+              "DocumentMoniker": "C:\\Users\\radud\\Desktop\\LICENTA\\licenta-main - nefunctional\\GestiuneFunerara\\Pages\\_Layout.cshtml",
+              "RelativeDocumentMoniker": "GestiuneFunerara\\Pages\\_Layout.cshtml",
+              "ToolTip": "C:\\Users\\radud\\Desktop\\LICENTA\\licenta-main - nefunctional\\GestiuneFunerara\\Pages\\_Layout.cshtml",
+              "RelativeToolTip": "GestiuneFunerara\\Pages\\_Layout.cshtml",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000759|",
+              "WhenOpened": "2025-06-12T17:27:10.562Z"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 15,
+              "Title": "_Host.cshtml",
+              "DocumentMoniker": "C:\\Users\\radud\\Desktop\\LICENTA\\licenta-main - nefunctional\\GestiuneFunerara\\Pages\\_Host.cshtml",
+              "RelativeDocumentMoniker": "GestiuneFunerara\\Pages\\_Host.cshtml",
+              "ToolTip": "C:\\Users\\radud\\Desktop\\LICENTA\\licenta-main - nefunctional\\GestiuneFunerara\\Pages\\_Host.cshtml",
+              "RelativeToolTip": "GestiuneFunerara\\Pages\\_Host.cshtml",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAABAAAAA2AAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000759|",
+              "WhenOpened": "2025-06-12T17:26:57.106Z"
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}

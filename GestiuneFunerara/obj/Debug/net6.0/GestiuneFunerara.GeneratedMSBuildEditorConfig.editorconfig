@@ -1,0 +1,93 @@
+is_global = true
+build_property.TargetFramework = net6.0
+build_property.TargetPlatformMinVersion = 
+build_property.UsingMicrosoftNETSdkWeb = true
+build_property.ProjectTypeGuids = 
+build_property.InvariantGlobalization = 
+build_property.PlatformNeutralAssembly = 
+build_property.EnforceExtendedAnalyzerRules = 
+build_property._SupportedPlatformList = Linux,macOS,Windows
+build_property.RootNamespace = GestiuneFunerara
+build_property.RootNamespace = GestiuneFunerara
+build_property.ProjectDir = C:\Users\radud\Desktop\LICENTA\licenta-main - nefunctional\GestiuneFunerara\
+build_property.EnableComHosting = 
+build_property.EnableGeneratedComInterfaceComImportInterop = 
+build_property.RazorLangVersion = 6.0
+build_property.SupportLocalizedComponentNames = 
+build_property.GenerateRazorMetadataSourceChecksumAttributes = 
+build_property.MSBuildProjectDirectory = C:\Users\radud\Desktop\LICENTA\licenta-main - nefunctional\GestiuneFunerara
+build_property._RazorSourceGeneratorDebug = 
+build_property.EffectiveAnalysisLevelStyle = 6.0
+build_property.EnableCodeStyleSeverity = 
+
+[C:/Users/radud/Desktop/LICENTA/licenta-main - nefunctional/GestiuneFunerara/App.razor]
+build_metadata.AdditionalFiles.TargetPath = QXBwLnJhem9y
+build_metadata.AdditionalFiles.CssScope = 
+
+[C:/Users/radud/Desktop/LICENTA/licenta-main - nefunctional/GestiuneFunerara/Pages/AdminDashboard.razor]
+build_metadata.AdditionalFiles.TargetPath = UGFnZXNcQWRtaW5EYXNoYm9hcmQucmF6b3I=
+build_metadata.AdditionalFiles.CssScope = 
+
+[C:/Users/radud/Desktop/LICENTA/licenta-main - nefunctional/GestiuneFunerara/Pages/ConfirmariPrecomenzi.razor]
+build_metadata.AdditionalFiles.TargetPath = UGFnZXNcQ29uZmlybWFyaVByZWNvbWVuemkucmF6b3I=
+build_metadata.AdditionalFiles.CssScope = 
+
+[C:/Users/radud/Desktop/LICENTA/licenta-main - nefunctional/GestiuneFunerara/Pages/DetaliiPachet.razor]
+build_metadata.AdditionalFiles.TargetPath = UGFnZXNcRGV0YWxpaVBhY2hldC5yYXpvcg==
+build_metadata.AdditionalFiles.CssScope = 
+
+[C:/Users/radud/Desktop/LICENTA/licenta-main - nefunctional/GestiuneFunerara/Pages/EditProfil.razor]
+build_metadata.AdditionalFiles.TargetPath = UGFnZXNcRWRpdFByb2ZpbC5yYXpvcg==
+build_metadata.AdditionalFiles.CssScope = 
+
+[C:/Users/radud/Desktop/LICENTA/licenta-main - nefunctional/GestiuneFunerara/Pages/ForgotPassword.razor]
+build_metadata.AdditionalFiles.TargetPath = UGFnZXNcRm9yZ290UGFzc3dvcmQucmF6b3I=
+build_metadata.AdditionalFiles.CssScope = 
+
+[C:/Users/radud/Desktop/LICENTA/licenta-main - nefunctional/GestiuneFunerara/Pages/Index.razor]
+build_metadata.AdditionalFiles.TargetPath = UGFnZXNcSW5kZXgucmF6b3I=
+build_metadata.AdditionalFiles.CssScope = 
+
+[C:/Users/radud/Desktop/LICENTA/licenta-main - nefunctional/GestiuneFunerara/Pages/IstoricPrecomenzi.razor]
+build_metadata.AdditionalFiles.TargetPath = UGFnZXNcSXN0b3JpY1ByZWNvbWVuemkucmF6b3I=
+build_metadata.AdditionalFiles.CssScope = 
+
+[C:/Users/radud/Desktop/LICENTA/licenta-main - nefunctional/GestiuneFunerara/Pages/Login.razor]
+build_metadata.AdditionalFiles.TargetPath = UGFnZXNcTG9naW4ucmF6b3I=
+build_metadata.AdditionalFiles.CssScope = 
+
+[C:/Users/radud/Desktop/LICENTA/licenta-main - nefunctional/GestiuneFunerara/Pages/ResetPassword.razor]
+build_metadata.AdditionalFiles.TargetPath = UGFnZXNcUmVzZXRQYXNzd29yZC5yYXpvcg==
+build_metadata.AdditionalFiles.CssScope = 
+
+[C:/Users/radud/Desktop/LICENTA/licenta-main - nefunctional/GestiuneFunerara/Pages/Signup.razor]
+build_metadata.AdditionalFiles.TargetPath = UGFnZXNcU2lnbnVwLnJhem9y
+build_metadata.AdditionalFiles.CssScope = 
+
+[C:/Users/radud/Desktop/LICENTA/licenta-main - nefunctional/GestiuneFunerara/Pages/VerificareCont.razor]
+build_metadata.AdditionalFiles.TargetPath = UGFnZXNcVmVyaWZpY2FyZUNvbnQucmF6b3I=
+build_metadata.AdditionalFiles.CssScope = 
+
+[C:/Users/radud/Desktop/LICENTA/licenta-main - nefunctional/GestiuneFunerara/Shared/SurveyPrompt.razor]
+build_metadata.AdditionalFiles.TargetPath = U2hhcmVkXFN1cnZleVByb21wdC5yYXpvcg==
+build_metadata.AdditionalFiles.CssScope = 
+
+[C:/Users/radud/Desktop/LICENTA/licenta-main - nefunctional/GestiuneFunerara/_Imports.razor]
+build_metadata.AdditionalFiles.TargetPath = X0ltcG9ydHMucmF6b3I=
+build_metadata.AdditionalFiles.CssScope = 
+
+[C:/Users/radud/Desktop/LICENTA/licenta-main - nefunctional/GestiuneFunerara/Shared/MainLayout.razor]
+build_metadata.AdditionalFiles.TargetPath = U2hhcmVkXE1haW5MYXlvdXQucmF6b3I=
+build_metadata.AdditionalFiles.CssScope = b-cxn7wz19k9
+
+[C:/Users/radud/Desktop/LICENTA/licenta-main - nefunctional/GestiuneFunerara/Pages/Error.cshtml]
+build_metadata.AdditionalFiles.TargetPath = UGFnZXNcRXJyb3IuY3NodG1s
+build_metadata.AdditionalFiles.CssScope = 
+
+[C:/Users/radud/Desktop/LICENTA/licenta-main - nefunctional/GestiuneFunerara/Pages/_Host.cshtml]
+build_metadata.AdditionalFiles.TargetPath = UGFnZXNcX0hvc3QuY3NodG1s
+build_metadata.AdditionalFiles.CssScope = 
+
+[C:/Users/radud/Desktop/LICENTA/licenta-main - nefunctional/GestiuneFunerara/Pages/_Layout.cshtml]
+build_metadata.AdditionalFiles.TargetPath = UGFnZXNcX0xheW91dC5jc2h0bWw=
+build_metadata.AdditionalFiles.CssScope = 

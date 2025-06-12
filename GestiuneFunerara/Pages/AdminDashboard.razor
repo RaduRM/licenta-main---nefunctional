@@ -1,0 +1,546 @@
+﻿@page "/admin-dashboard"
+@using GestiuneFunerara.Models
+@using GestiuneFunerara.Services
+@using Microsoft.EntityFrameworkCore
+@inject GestiuneFuneraraContext Db
+@inject UserSessionService Session
+@inject NavigationManager Navigation
+@inject IJSRuntime JS
+@inject ReportService ReportService
+@inject ReportExcelService ReportExcelService
+
+@code {
+    private int totalUtilizatori = 0;
+    private int totalPrecomenzi = 0;
+    private int totalSicrie = 0;
+
+    private string activeView = "";
+
+    private List<Utilizatori> utilizatori = new();
+    private List<Precomenzi> precomenzi = new();
+    private List<Produse> sicrie = new();
+
+    private string errorMessage;
+    private int? editUserId = null;
+    private Utilizatori editUser = null;
+
+    private int? editPrecomandaId = null;
+    private Precomenzi editPrecomanda = null;
+
+    protected override async Task OnInitializedAsync()
+    {
+        totalUtilizatori = await Db.Utilizatoris.CountAsync();
+        totalPrecomenzi = await Db.Precomenzis.CountAsync();
+        totalSicrie = await Db.Produses.CountAsync();
+    }
+
+    private async Task ShowUtilizatori()
+    {
+        utilizatori = await Db.Utilizatoris.ToListAsync();
+        activeView = "utilizatori";
+    }
+
+    private async Task ShowPrecomenzi()
+    {
+        precomenzi = await Db.Precomenzis
+            .Include(p => p.id_utilizatorNavigation)
+            .Include(p => p.id_pachetefunerareNavigation)
+            .Include(p => p.id_produsNavigation)
+            .ToListAsync();
+        activeView = "precomenzi";
+    }
+
+    private async Task ShowSicrie()
+    {
+        sicrie = await Db.Produses.ToListAsync();
+        activeView = "sicrie";
+    }
+
+    private async Task GenereazaRaportPdf()
+    {
+        var pdf = await ReportService.GeneratePrecomenziPdf();
+        var base64 = Convert.ToBase64String(pdf);
+        await JS.InvokeVoidAsync("downloadFileFromBase64", base64, $"RaportPrecomenzi {DateTime.Now:yyyy-MM-dd}.pdf", "application/pdf");
+    }
+
+    private async Task GenereazaRaportExcel()
+    {
+        var excel = await ReportExcelService.GeneratePrecomenziExcel();
+        var base64 = Convert.ToBase64String(excel);
+        await JS.InvokeVoidAsync("downloadFileFromBase64", base64, $"RaportPrecomenzi {DateTime.Now:yyyy-MM-dd}.xlsx", "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet");
+    }
+
+    private async Task GenereazaRaportStocuri()
+    {
+        var excel = await ReportExcelService.GenerateStocuriSicrieExcel();
+        var base64 = Convert.ToBase64String(excel);
+        await JS.InvokeVoidAsync("downloadFileFromBase64", base64, $"StocuriSicrie {DateTime.Now:yyyy-MM-dd}.xlsx", "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet");
+    }
+
+    private async Task GenereazaUtilizatoriPdf()
+    {
+        var pdf = await ReportService.GenerateUtilizatoriPdf();
+        var base64 = Convert.ToBase64String(pdf);
+        await JS.InvokeVoidAsync("downloadFileFromBase64", base64, $"RaportUtilizatori {DateTime.Now:yyyy-MM-dd}.pdf", "application/pdf");
+    }
+
+    private async Task GenereazaUtilizatoriExcel()
+    {
+        var excel = await ReportExcelService.GenerateUtilizatoriExcel();
+        var base64 = Convert.ToBase64String(excel);
+        await JS.InvokeVoidAsync("downloadFileFromBase64", base64, $"RaportUtilizatori {DateTime.Now:yyyy-MM-dd}.xlsx", "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet");
+    }
+
+    private void StartEditUser(int id)
+    {
+        var u = utilizatori.FirstOrDefault(x => x.id_utilizator == id);
+        if (u != null)
+        {
+            editUserId = id;
+            editUser = new Utilizatori
+            {
+                id_utilizator = u.id_utilizator,
+                NumeComplet = u.NumeComplet,
+                Email = u.Email,
+                Telefon = u.Telefon,
+                Rol = u.Rol
+            };
+        }
+    }
+
+    private void CancelEditUser()
+    {
+        editUserId = null;
+        editUser = null;
+    }
+
+    private async Task SaveEditUser()
+    {
+        var u = await Db.Utilizatoris.FindAsync(editUser.id_utilizator);
+        if (u != null)
+        {
+            var currentRol = Session.Rol?.Trim().ToLower();
+            var targetRol = u.Rol?.Trim().ToLower();
+            var newRol = editUser.Rol?.Trim().ToLower();
+
+            // Dacă userul logat este admin și încearcă să modifice un admin sau manager
+            if (currentRol == "admin" && (targetRol == "admin" || targetRol == "manager"))
+            {
+                errorMessage = "Adminii nu pot modifica utilizatori cu rol de admin sau manager.";
+                return;
+            }
+
+            u.NumeComplet = editUser.NumeComplet;
+            u.Email = editUser.Email;
+            u.Telefon = editUser.Telefon;
+            u.Rol = editUser.Rol;
+            await Db.SaveChangesAsync();
+            utilizatori = await Db.Utilizatoris.ToListAsync();
+            CancelEditUser();
+            errorMessage = null; // Curățăm mesajele vechi
+        }
+    }
+
+
+    private async Task DeleteUser(int id)
+    {
+        var currentRol = Session.Rol?.Trim().ToLower();
+        var u = await Db.Utilizatoris.FindAsync(id);
+        var targetRol = u?.Rol?.Trim().ToLower();
+
+        if (u == null)
+        {
+            errorMessage = "Utilizatorul nu a fost găsit.";
+            return;
+        }
+
+        // Dacă admin-ul încearcă să șteargă un admin sau manager
+        if (currentRol == "admin" && (targetRol == "admin" || targetRol == "manager"))
+        {
+            errorMessage = "Adminii nu pot șterge utilizatori cu rol de admin sau manager.";
+            return;
+        }
+
+        var hasPrecomenzi = await Db.Precomenzis.AnyAsync(p => p.id_utilizator == id);
+        if (hasPrecomenzi)
+        {
+            errorMessage = "Nu poți șterge utilizatorul — are precomenzi asociate.";
+            return;
+        }
+
+        Db.Utilizatoris.Remove(u);
+        await Db.SaveChangesAsync();
+        utilizatori = await Db.Utilizatoris.ToListAsync();
+        errorMessage = null;
+    }
+    private void StartEditPrecomanda(int id)
+    {
+        var p = precomenzi.FirstOrDefault(p => p.id_precomenzi == id);
+        if (p != null)
+        {
+            editPrecomanda = new Precomenzi
+            {
+                id_precomenzi = p.id_precomenzi,
+                NumeDefunct = p.NumeDefunct,
+                DataDeces = p.DataDeces,
+                LocatieRidicare = p.LocatieRidicare,
+                Observatii = p.Observatii,
+                Stare = p.Stare
+            };
+            editPrecomandaId = id;
+        }
+    }
+
+    private void CancelEditPrecomanda()
+    {
+        editPrecomandaId = null;
+        editPrecomanda = null;
+    }
+
+    private async Task SaveEditPrecomanda()
+    {
+        var p = await Db.Precomenzis.FindAsync(editPrecomanda.id_precomenzi);
+        if (p != null)
+        {
+            p.NumeDefunct = editPrecomanda.NumeDefunct;
+            p.DataDeces = editPrecomanda.DataDeces;
+            p.LocatieRidicare = editPrecomanda.LocatieRidicare;
+            p.Observatii = editPrecomanda.Observatii;
+            p.Stare = editPrecomanda.Stare;
+            await Db.SaveChangesAsync();
+            precomenzi = await Db.Precomenzis
+                .Include(p => p.id_utilizatorNavigation)
+                .Include(p => p.id_pachetefunerareNavigation)
+                .Include(p => p.id_produsNavigation)
+                .ToListAsync();
+            editPrecomandaId = null;
+            editPrecomanda = null;
+            StateHasChanged();
+        }
+    }
+
+    private async Task DeletePrecomanda(int id)
+    {
+        var p = await Db.Precomenzis.FindAsync(id);
+        if (p != null)
+        {
+            Db.Precomenzis.Remove(p);
+            await Db.SaveChangesAsync();
+            precomenzi = await Db.Precomenzis
+                .Include(p => p.id_utilizatorNavigation)
+                .Include(p => p.id_pachetefunerareNavigation)
+                .Include(p => p.id_produsNavigation)
+                .ToListAsync();
+            StateHasChanged();
+        }
+    }
+
+}
+
+}
+
+<link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.5/font/bootstrap-icons.css" rel="stylesheet" />
+<link href="/css/dashboard.css" rel="stylesheet" />
+
+<div class="container mt-4">
+    <div class="d-flex justify-content-between align-items-center mb-4">
+        <h2 class="fw-bold">Dashboard Admin</h2>
+        <span class="text-muted">Bun venit, @Session.NumeComplet</span>
+    </div>
+
+    <div class="row g-4">
+        <div class="col-md-4">
+            <div class="card shadow border-start border-primary border-4">
+                <div class="card-body">
+                    <h5 class="card-title text-primary">Utilizatori</h5>
+                    <p class="display-6 fw-bold">@totalUtilizatori</p>
+                    <button class="btn btn-primary w-100" @onclick="ShowUtilizatori">Vezi utilizatori</button>
+                </div>
+            </div>
+        </div>
+
+        <div class="col-md-4">
+            <div class="card shadow border-start border-success border-4">
+                <div class="card-body">
+                    <h5 class="card-title text-success">Precomenzi</h5>
+                    <p class="display-6 fw-bold">@totalPrecomenzi</p>
+                    <button class="btn btn-success w-100" @onclick="ShowPrecomenzi">Vezi precomenzi</button>
+                </div>
+            </div>
+        </div>
+
+        <div class="col-md-4">
+            <div class="card shadow border-start border-warning border-4">
+                <div class="card-body">
+                    <h5 class="card-title text-warning">Stocuri Sicrie</h5>
+                    <p class="display-6 fw-bold">@totalSicrie</p>
+                    <button class="btn btn-warning w-100" @onclick="ShowSicrie">Vezi stocuri</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- RAPOARTE -->
+    <div class="mt-5">
+        <div class="card shadow border-0">
+            <div class="card-body">
+                <h4 class="card-title mb-4">📁 Generare Rapoarte</h4>
+                <div class="row g-3">
+                    <div class="col-md-6">
+                        <div class="p-3 bg-light rounded">
+                            <h6 class="text-danger mb-3"><i class="bi bi-file-earmark-pdf"></i> PDF</h6>
+                            <button class="btn btn-danger w-100 mb-2" @onclick="GenereazaRaportPdf">Raport Precomenzi (PDF)</button>
+                            <button class="btn btn-danger w-100" @onclick="GenereazaUtilizatoriPdf">Raport Utilizatori (PDF)</button>
+                        </div>
+                    </div>
+                    <div class="col-md-6">
+                        <div class="p-3 bg-light rounded">
+                            <h6 class="text-success mb-3"><i class="bi bi-file-earmark-excel"></i> Excel</h6>
+                            <button class="btn btn-success w-100 mb-2" @onclick="GenereazaRaportExcel">Raport Precomenzi (Excel)</button>
+                            <button class="btn btn-success w-100 mb-2" @onclick="GenereazaUtilizatoriExcel">Raport Utilizatori (Excel)</button>
+                            <button class="btn btn-warning w-100" @onclick="GenereazaRaportStocuri">Stocuri Sicrie (Excel)</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    @if (!string.IsNullOrEmpty(errorMessage))
+    {
+        <div class="alert alert-danger mt-4">@errorMessage</div>
+    }
+
+    <!-- DYNAMIC VIEWS -->
+    @if (activeView == "utilizatori")
+    {
+        <div class="mt-5">
+            <h4>Utilizatori</h4>
+            <table class="table table-hover">
+                <thead>
+                    <tr>
+                        <th>ID</th>
+                        <th>Nume</th>
+                        <th>Email</th>
+                        <th>Telefon</th>
+                        <th>Rol</th>
+                        <th>Acțiuni</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @foreach (var u in utilizatori)
+                    {
+                        <tr>
+                            <td>@u.id_utilizator</td>
+                            <td>
+                                @if (editUserId == u.id_utilizator)
+                                {
+                                    <input class="form-control" @bind="editUser.NumeComplet" />
+                                }
+                                else
+                                {
+                                    @u.NumeComplet
+                                }
+                            </td>
+                            <td>
+                                @if (editUserId == u.id_utilizator)
+                                {
+                                    <input class="form-control" @bind="editUser.Email" />
+                                }
+                                else
+                                {
+                                    @u.Email
+                                }
+                            </td>
+                            <td>
+                                @if (editUserId == u.id_utilizator)
+                                {
+                                    <input class="form-control" @bind="editUser.Telefon" />
+                                }
+                                else
+                                {
+                                    @u.Telefon
+                                }
+                            </td>
+                            <td>
+                                @if (editUserId == u.id_utilizator)
+                                {
+                                    @if (Session.Rol?.Trim().ToLower() == "manager")
+                                    {
+                                        <select class="form-select" @bind="editUser.Rol">
+                                            <option value="client">client</option>
+                                            <option value="admin">admin</option>
+                                            <option value="manager">manager</option>
+                                        </select>
+                                    }
+                                    else if (Session.Rol?.Trim().ToLower() == "admin" && u.Rol?.Trim().ToLower() == "client")
+                                    {
+                                        <select class="form-select" @bind="editUser.Rol">
+                                            <option value="client">client</option>
+                                        </select>
+                                    }
+                                    else
+                                    {
+                                        <span class="text-muted">@u.Rol</span>
+                                    }
+
+
+                                }
+                                else
+                                {
+                                    @u.Rol
+                                }
+                            </td>
+                            <td>
+                                @if (editUserId == u.id_utilizator)
+                                {
+                                    <button class="btn btn-success btn-sm me-1" @onclick="SaveEditUser">Salvează</button>
+                                    <button class="btn btn-secondary btn-sm" @onclick="CancelEditUser">Renunță</button>
+                                }
+                                else
+                                {
+                                    <button class="btn btn-warning btn-sm me-1" @onclick="() => StartEditUser(u.id_utilizator)">Editează</button>
+                                    <button class="btn btn-danger btn-sm" @onclick="() => DeleteUser(u.id_utilizator)">Șterge</button>
+                                }
+                            </td>
+                        </tr>
+                    }
+                </tbody>
+            </table>
+        </div>
+    }
+
+    @if (activeView == "precomenzi")
+    {
+        <div class="mt-5">
+            <h4>Precomenzi</h4>
+            <table class="table table-hover">
+                <thead>
+                    <tr>
+                        <th>ID</th>
+                        <th>Utilizator</th>
+                        <th>Pachet</th>
+                        <th>Nume Defunct</th>
+                        <th>Data Deces</th>
+                        <th>Locație Ridicare</th>
+                        <th>Sicriu</th>
+                        <th>Stare</th>
+                        <th>Data Creare</th>
+                        @if (Session.Rol == "manager")
+                        {
+                            <th>Acțiuni</th>
+                        }
+                    </tr>
+                </thead>
+                <tbody>
+                    @foreach (var p in precomenzi)
+                    {
+                        <tr>
+                            <td>@p.id_precomenzi</td>
+                            <td>@(p.id_utilizatorNavigation?.NumeComplet ?? "—")</td>
+                            <td>@(p.id_pachetefunerareNavigation?.Denumire ?? "—")</td>
+
+                            <td>
+                                @if (editPrecomandaId == p.id_precomenzi)
+                                {
+                                    <input class="form-control table-input" @bind="editPrecomanda.NumeDefunct" />
+                                }
+                                else
+                                {
+                                    @p.NumeDefunct
+                                }
+                            </td>
+
+                            <td>
+                                @if (editPrecomandaId == p.id_precomenzi)
+                                {
+                                    <input type="date" class="form-control table-input" @bind="editPrecomanda.DataDeces" />
+                                }
+                                else
+                                {
+                                    @(p.DataDeces?.ToString("yyyy-MM-dd") ?? "—")
+                                }
+                            </td>
+
+                            <td>
+                                @if (editPrecomandaId == p.id_precomenzi)
+                                {
+                                    <input class="form-control table-input" @bind="editPrecomanda.LocatieRidicare" />
+                                }
+                                else
+                                {
+                                    @p.LocatieRidicare
+                                }
+                            </td>
+
+                            <td>@(p.id_produsNavigation?.nume ?? "—")</td>
+
+                            <td>
+                                @if (editPrecomandaId == p.id_precomenzi)
+                                {
+                                    <select class="form-select table-select" @bind="editPrecomanda.Stare">
+                                        <option value="Precomanda">Precomanda</option>
+                                        <option value="confirmata">Confirmata</option>
+                                    </select>
+                                }
+                                else
+                                {
+                                    @p.Stare
+                                }
+                            </td>
+
+                            <td>@p.DataCreare.ToString("dd/MM/yyyy HH:mm")</td>
+
+                            @if (Session.Rol?.Trim().ToLower() == "manager")
+                            {
+                                <td>
+                                    @if (editPrecomandaId == p.id_precomenzi)
+                                    {
+                                        <button class="btn btn-success btn-sm me-1" @onclick="SaveEditPrecomanda">Salvează</button>
+                                        <button class="btn btn-secondary btn-sm" @onclick="CancelEditPrecomanda">Renunță</button>
+                                    }
+                                    else
+                                    {
+                                        <button class="btn btn-warning btn-sm me-1" @onclick="() => StartEditPrecomanda(p.id_precomenzi)">Editează</button>
+                                        <button class="btn btn-danger btn-sm" @onclick="() => DeletePrecomanda(p.id_precomenzi)">Șterge</button>
+                                    }
+                                </td>
+                            }
+                        </tr>
+                    }
+                </tbody>
+            </table>
+        </div>
+    }
+
+
+    @if (activeView == "sicrie")
+    {
+        <div class="mt-5">
+            <h4>Stocuri Sicrie</h4>
+            <table class="table table-hover">
+                <thead>
+                    <tr>
+                        <th>ID</th>
+                        <th>Nume</th>
+                        <th>Stoc</th>
+                        <th>Preț</th>
+                        <th>Personalizat</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @foreach (var s in sicrie)
+                    {
+                        <tr>
+                            <td>@s.id_produs</td>
+                            <td>@s.nume</td>
+                            <td>@s.stoc_curent</td>
+                            <td>@s.pret_vanzare RON</td>
+                            <td>@(s.este_personalizat ? "Da" : "Nu")</td>
+                        </tr>
+                    }
+                </tbody>
+            </table>
+        </div>
+    }
+</div>

@@ -1,0 +1,300 @@
+﻿@page "/detalii-pachet/{id:int}"
+@using GestiuneFunerara.Models
+@using GestiuneFunerara.Services
+@using Microsoft.EntityFrameworkCore
+@using System.ComponentModel.DataAnnotations
+@inject GestiuneFuneraraContext Db
+@inject UserSessionService Session
+@inject NavigationManager Navigation
+@inject IJSRuntime JS
+@inject EmailService EmailService
+@inject ReportService ReportService
+
+@code {
+    [Parameter] public int id { get; set; }
+    private PacheteFunerare? pachet;
+    private PrecomandaModel precomanda = new();
+    private string metodaConfirmare = "telefonic";
+    private bool showLightbox = false;
+
+    private List<Produse> produseSicriu = new();
+    private int? selectedSicriuId;
+
+    protected override async Task OnInitializedAsync()
+    {
+        pachet = await Db.PacheteFunerares.FindAsync(id);
+        if (pachet == null)
+        {
+            Navigation.NavigateTo("/");
+            return;
+        }
+
+        produseSicriu = await Db.Produses
+            .Where(p => p.stoc_curent > 0 || p.este_personalizat == true)
+            .ToListAsync();
+
+        if (Session.IdUtilizator != 0)
+        {
+            var utilizator = await Db.Utilizatoris
+                .FirstOrDefaultAsync(u => u.id_utilizator == Session.IdUtilizator);
+
+            if (utilizator != null)
+            {
+                precomanda.NumeUtilizator = utilizator.NumeComplet;
+                precomanda.Email = utilizator.Email;
+                precomanda.Telefon = utilizator.Telefon;
+            }
+        }
+    }
+
+    private async Task TrimitePrecomanda()
+    {
+        if (selectedSicriuId == null)
+        {
+            await JS.InvokeVoidAsync("alert", "Te rugăm să selectezi un sicriu.");
+            return;
+        }
+
+        var random = new Random();
+        var cod = random.Next(100000, 999999).ToString();
+
+        var comandaNoua = new Precomenzi
+        {
+            id_utilizator = Session.IdUtilizator,
+            id_pachetefunerare = pachet.id_pachetefunerare,
+            id_produs = selectedSicriuId,
+            NumeDefunct = precomanda.NumeDefunct,
+            DataDeces = precomanda.DataDeces,
+            LocatieRidicare = precomanda.LocatieRidicare,
+            Observatii = precomanda.Observatii,
+            Stare = "Precomanda",
+            DataCreare = DateTime.Now,
+            CodConfirmare = cod
+        };
+
+        Db.Precomenzis.Add(comandaNoua);
+        await Db.SaveChangesAsync();
+
+        QuestPDF.Settings.License = QuestPDF.Infrastructure.LicenseType.Community;
+
+        var pdfRaport = await ReportService.GenerateRaportPrecomandaPdf(comandaNoua.id_precomenzi);
+        await EmailService.TrimiteEmailAdminAsync("admin@memorial.ro", "Raport Precomandă Nouă",
+            "A fost creată o nouă precomandă. Vezi raportul atașat.", pdfRaport);
+
+        if (metodaConfirmare == "email")
+        {
+            await EmailService.TrimiteEmailConfirmarePrecomandaAsync(precomanda.Email, cod, comandaNoua.id_precomenzi);
+        }
+        else if (metodaConfirmare == "sms")
+        {
+            await TrimiteSmsConfirmare(precomanda.Telefon, cod);
+        }
+
+        Navigation.NavigateTo($"/confirmare-precomanda/{metodaConfirmare}");
+    }
+
+    public class PrecomandaModel
+    {
+      
+        public string? NumeUtilizator { get; set; }
+
+        public string? Email { get; set; }
+        
+        public string? Telefon { get; set; }
+
+        [Required(ErrorMessage = "Numele defunctului este obligatoriu.")]
+        public string? NumeDefunct { get; set; }
+
+        [DataType(DataType.Date)]
+        public DateTime? DataDeces { get; set; }
+
+        [Required(ErrorMessage = "Locația de ridicare este obligatorie.")]
+        public string? LocatieRidicare { get; set; }
+
+        public string? Observatii { get; set; }
+    }
+
+    private async Task ScrollCuNavigare()
+    {
+        Navigation.NavigateTo("#pachete", forceLoad: false);
+        await Task.Delay(50);
+        await JS.InvokeVoidAsync("scrollToPachete");
+    }
+
+    private async Task TrimiteSmsConfirmare(string? telefon, string cod)
+    {
+        var smsContent = $"Codul dvs. de confirmare este: {cod}";
+        Console.WriteLine($"[SMS] Trimite către {telefon}: {smsContent}");
+        await Task.CompletedTask;
+    }
+    private decimal PretPachet => pachet?.Pret ?? 0;
+private decimal PretSicriu => produseSicriu.FirstOrDefault(x => x.id_produs == selectedSicriuId)?.pret_vanzare ?? 0;
+private decimal PretTotalFaraReducere => PretPachet + PretSicriu;
+private bool EsteLogat => Session.IdUtilizator != 0;
+private decimal PretTotalCuReducere => EsteLogat ? Math.Round(PretTotalFaraReducere * 0.9m, 2) : PretTotalFaraReducere;
+
+
+
+}
+
+<head>
+    <link href="/css/detaliipachet.css" rel="stylesheet" />
+</head>
+
+<div class="container my-5">
+    @if (pachet != null)
+    {
+        <div class="text-center mb-4">
+            <h2>@pachet.Denumire</h2>
+
+            <div class="zoom-container mb-3" @onclick="() => showLightbox = true">
+                <img src="@pachet.ImagineURL" alt="@pachet.Denumire" class="img-fluid zoom-img" style="max-height: 400px;" />
+            </div>
+
+            <p class="descriere-frumoasa">@pachet.Descriere</p>
+
+            <h4 style="color: black; text-shadow: 1px 1px 2px rgba(0,0,0,0.5);">
+                Preț: @pachet.Pret.ToString("C", new System.Globalization.CultureInfo("ro-RO"))
+            </h4>
+            <button class="btn btn-vezi-pachete mt-3" @onclick="ScrollCuNavigare">Vezi alte Pachete funerare</button>
+        </div>
+
+        <div class="form-container p-4 my-4 shadow-lg rounded-3" style="background-color: rgba(255,255,255,0.95);">
+            <div class="form-title-bar mb-3">
+                <h3 class="form-title">Completează formularul de precomandă</h3>
+            </div>
+
+            <EditForm Model="@precomanda" OnValidSubmit="TrimitePrecomanda">
+                <DataAnnotationsValidator />
+                <ValidationSummary />
+
+                <div class="mb-3">
+                    <InputText class="form-control form-input" @bind-Value="precomanda.NumeUtilizator" placeholder="Nume complet" readonly />
+                    <ValidationMessage For="@(() => precomanda.NumeUtilizator)" />
+                </div>
+                <div class="mb-3">
+                    <InputText class="form-control form-input" @bind-Value="precomanda.Email" placeholder="Email" readonly />
+                    <ValidationMessage For="@(() => precomanda.Email)" />
+                </div>
+                <div class="mb-3">
+                    <InputText class="form-control form-input" @bind-Value="precomanda.Telefon" placeholder="Telefon" readonly />
+                    <ValidationMessage For="@(() => precomanda.Telefon)" />
+                </div>
+                <div class="mb-3">
+                    <InputText class="form-control form-input" @bind-Value="precomanda.NumeDefunct" placeholder="Numele defunctului" />
+                    <ValidationMessage For="@(() => precomanda.NumeDefunct)" />
+                </div>
+                <div class="mb-3">
+                    <InputDate class="form-control form-input" @bind-Value="precomanda.DataDeces" />
+                    <span class="ms-2 text-muted">(Data decesului - a se completa doar în cazul în care se cunoaște)</span>
+                    <ValidationMessage For="@(() => precomanda.DataDeces)" />
+                </div>
+                <div class="mb-3">
+                    <InputText class="form-control form-input" @bind-Value="precomanda.LocatieRidicare" placeholder="Locație ridicare" />
+                    <ValidationMessage For="@(() => precomanda.LocatieRidicare)" />
+                </div>
+
+                <div class="mb-3">
+                    <label class="form-label">Selectează sicriu:</label>
+                    <select class="form-select form-input" @bind="selectedSicriuId">
+                        <option value="">-- Selectează sicriu --</option>
+                        @foreach (var s in produseSicriu)
+                        {
+                            <option value="@s.id_produs">
+                                @s.nume @(s.este_personalizat == true ? "(Personalizat)" : "")
+                            </option>
+                        }
+                    </select>
+                </div>
+
+                @if (selectedSicriuId != null)
+                {
+                    var sicriuSelectat = produseSicriu.FirstOrDefault(x => x.id_produs == selectedSicriuId);
+                    <div class="mb-3">
+                        @if (!string.IsNullOrEmpty(sicriuSelectat?.imagine_url))
+                        {
+                            <img src="@sicriuSelectat.imagine_url" alt="Imagine sicriu" class="img-thumbnail mb-2" style="max-width: 200px;" />
+                        }
+                        <strong><br />Descriere:</strong> @sicriuSelectat?.descriere<br />
+                        <strong>Preț :</strong> @sicriuSelectat?.pret_vanzare RON <br />
+
+                        @if (sicriuSelectat != null)
+                        {
+                            if (sicriuSelectat.este_personalizat == true)
+                            {
+                                <span class="badge bg-primary">Personalizat - Cerere la comandă</span>
+                            }
+                            else if (sicriuSelectat.stoc_curent == 0)
+                            {
+                                <span class="badge bg-danger">Stoc epuizat - Cerere la comandă</span>
+                            }
+                            else if (sicriuSelectat.stoc_curent < 3)
+                            {
+                                <span class="badge bg-warning text-dark">Stoc aproape epuizat</span>
+                            }
+                            else
+                            {
+                                <span class="badge bg-success">Pe stoc</span>
+                            }
+                        }
+                   <div class="mb-3">
+    <strong>Preț total estimativ:</strong>
+    @if (EsteLogat)
+    {
+        <div>
+            <span class="text-decoration-line-through text-muted me-2">
+                @PretTotalFaraReducere.ToString("C", new System.Globalization.CultureInfo("ro-RO"))
+            </span>
+            <span class="badge bg-success">
+                @PretTotalCuReducere.ToString("C", new System.Globalization.CultureInfo("ro-RO"))
+            </span>
+            <br />
+            <small class="text-muted">Ai primit o reducere de 10% pentru că ți-ai creat cont!</small>
+        </div>
+    }
+    @* else
+    {
+        <span class="badge bg-info text-dark">
+            @PretTotalFaraReducere.ToString("C", new System.Globalization.CultureInfo("ro-RO"))
+        </span>
+        <br />
+        <small class="text-muted">Preț estimativ. Creează un cont pentru o reducere de 10%.</small>
+    } *@
+</div>
+            </div>
+
+
+                }
+
+                <div class="mb-3">
+                    <InputTextArea class="form-control form-input" @bind-Value="precomanda.Observatii" placeholder="Detalii suplimentare..." rows="3" />
+                </div>
+
+                <div class="mb-3">
+                    <label for="metodaConfirmare" class="form-label">Metoda de confirmare:</label>
+                    <select id="metodaConfirmare" class="form-select form-input" @bind="metodaConfirmare">
+                        <option value="telefonic">Telefonic</option>
+                        <option value="sms">SMS</option>
+                        <option value="email">Email</option>
+                    </select>
+                </div>
+
+                <button type="submit" class="btn btn-vezi-pachete w-100">Trimite precomanda</button>
+            </EditForm>
+        </div>
+    }
+    else
+    {
+        <p class="text-center text-muted">Nu am găsit acest pachet.</p>
+    }
+
+    @if (showLightbox)
+    {
+        <div class="lightbox-overlay" @onclick="() => showLightbox = false">
+            <button class="btn-back" @onclick="() => showLightbox = false">
+                <i class="bi bi-arrow-left"></i> Înapoi
+            </button>
+            <img src="@pachet.ImagineURL" alt="Imagine zoom" class="lightbox-img" />
+        </div>
+    }
+</div>

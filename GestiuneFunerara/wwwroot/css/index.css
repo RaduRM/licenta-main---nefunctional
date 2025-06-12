@@ -1,0 +1,236 @@
+﻿
+body {
+    background-color: #ffffff;
+    color: #333;
+    font-family: 'Segoe UI', sans-serif;
+    margin: 0;
+    padding: 0;
+}
+
+
+.home-header {
+    padding: 2rem;
+    background-color: rgba(255, 255, 255, 0.95);
+    border-bottom: 2px solid #ccc;
+    text-align: center;
+}
+
+.home-logo {
+    height: 70px;
+    margin-bottom: 0.5rem;
+}
+
+.welcome-card {
+    background-color: #f2f2f2;
+    padding: 3rem 2rem;
+    margin: 2rem auto;
+    border-radius: 1rem;
+    max-width: 800px;
+    box-shadow: 0 6px 20px rgba(0, 0, 0, 0.05);
+    color: #333;
+    text-align: center;
+}
+
+    .welcome-card h2 {
+        font-size: 2rem;
+        margin-bottom: 1rem;
+    }
+
+    .welcome-card .user-name {
+        font-weight: bold;
+        color: #ffd700; 
+        text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.6); 
+    }
+
+    .welcome-card p {
+        font-size: 1.1rem;
+        color: #555;
+    }
+
+.guest-wrapper {
+    background-color: #ffffff;
+    padding-top: 3rem;
+    padding-bottom: 2rem;
+    display: flex;
+    justify-content: center;
+}
+
+.guest-box {
+    background-color: #f8f9fa;
+    padding: 2rem;
+    border-radius: 1rem;
+    box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+    max-width: 500px;
+    width: 100%;
+    color: #333;
+    text-align: center;
+}
+
+
+.btn-auth {
+    background-color: #212529;
+    color: #fff;
+    border: none;
+    padding: 0.6rem 1.2rem;
+    border-radius: 0.5rem;
+    font-weight: 500;
+    transition: all 0.3s ease;
+    box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+}
+
+    .btn-auth:hover {
+        background-color: #ffd700;
+        transform: translateY(-2px);
+        box-shadow: 0 6px 12px rgba(0,0,0,0.15);
+    }
+
+
+@media (max-width: 768px) {
+    .welcome-card {
+        padding: 2rem 1rem;
+    }
+
+    .guest-box {
+        padding: 1.5rem;
+    }
+
+    .home-logo {
+        height: 60px;
+    }
+}
+
+.card-img-top {
+    height: 200px;
+    object-fit: cover;
+    border-top-left-radius: 1rem;
+    border-top-right-radius: 1rem;
+}
+.pachet-card {
+    position: relative;
+    overflow: hidden;
+    border-radius: 1rem;
+    box-shadow: 0 4px 16px rgba(0,0,0,0.2);
+    transition: transform 0.3s;
+}
+
+    .pachet-card:hover {
+        transform: scale(1.02);
+    }
+
+.pachet-img {
+    width: 100%;
+    height: auto;
+    display: block;
+    border-radius: 1rem;
+}
+
+.pachet-overlay {
+    position: absolute;
+    bottom: 0;
+    background: rgba(0,0,0,0.6);
+    width: 100%;
+    padding: 1rem;
+    color: white;
+    text-align: center;
+}
+
+    .pachet-overlay h5 {
+        margin-bottom: 0.5rem;
+        font-size: 1.2rem;
+        font-weight: bold;
+    }
+
+    .pachet-overlay p {
+        font-size: 0.95rem;
+        margin-bottom: 0.5rem;
+    }
+
+.pachet-img-btn {
+    width: 100%;
+    height: auto;
+    border-radius: 1rem;
+    box-shadow: 0 4px 16px rgba(0,0,0,0.2);
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+    display: block;
+}
+
+    .pachet-img-btn:hover {
+        transform: scale(1.03);
+        box-shadow: 0 8px 24px rgba(218, 165, 32, 0.6); 
+    }
+
+.image-link {
+    text-decoration: none;
+}
+.descriere-memorial {
+    max-width: 900px;
+    margin: 2rem auto;
+    padding: 2rem;
+    color: #444;
+    line-height: 1.7;
+    font-size: 1.1rem;
+}
+
+    .descriere-memorial p {
+        margin-bottom: 1.5rem;
+    }
+
+    .descriere-memorial .btn {
+        padding: 0.6rem 1.4rem;
+        font-weight: 500;
+        border-radius: 0.5rem;
+    }
+
+.descriere-img {
+    width: 100%;
+    max-width: 700px; 
+    border-radius: 1rem;
+    box-shadow: 0 6px 16px rgba(0,0,0,0.1);
+    transition: transform 0.3s ease;
+}
+
+    .descriere-img:hover {
+        transform: scale(1.02);
+    }
+.tab-btn {
+    border: none;
+    padding: 0.6rem 1.2rem;
+    margin: 0 0.5rem;
+    border-radius: 2rem;
+    background-color: #eee;
+    font-weight: 500;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+}
+
+    .tab-btn.active {
+        background-color: #6a5c4f;
+        color: white;
+    }
+
+    .tab-btn:hover {
+        background-color: #ffd700;
+    }
+
+.btn-vezi-pachete {
+    background-color: #212529;
+    color: #fff;
+    padding: 0.6rem 1.4rem;
+    border: none;
+    border-radius: 0.5rem;
+    font-weight: 500;
+    font-size: 1rem;
+    transition: all 0.3s ease;
+    box-shadow: 0 4px 10px rgba(0,0,0,0.1);
+    text-decoration: none;
+    display: inline-block;
+}
+
+    .btn-vezi-pachete:hover {
+        background-color: #ffd700;
+        transform: translateY(-2px);
+        box-shadow: 0 6px 16px rgba(0,0,0,0.2);
+    }
+html {
+    scroll-behavior: smooth;
+}

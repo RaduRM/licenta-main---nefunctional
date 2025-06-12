@@ -1,0 +1,121 @@
+﻿@page "/signup"
+@using GestiuneFunerara.Models
+@using Microsoft.EntityFrameworkCore
+@using System.ComponentModel.DataAnnotations
+@inject GestiuneFuneraraContext Db
+@inject NavigationManager Navigation
+@inject EmailService EmailService
+
+<link href="/css/signup.css" rel="stylesheet" />
+
+<div class="signup-wrapper">
+    <div class="signup-box">
+        <h2>Înregistrare cont nou</h2>
+
+        @if (!string.IsNullOrEmpty(mesaj))
+        {
+            <div class="error-message">@mesaj</div>
+        }
+
+        @if (!codTrimis)
+        {
+            <EditForm Model="@user" OnValidSubmit="HandleSignup">
+                <DataAnnotationsValidator />
+                <ValidationSummary />
+
+                <InputText @bind-Value="user.NumeComplet" class="form-control" placeholder="Nume complet" />
+                <InputText @bind-Value="user.Email" class="form-control" placeholder="Email" />
+                <InputText @bind-Value="user.Telefon" class="form-control" placeholder="Telefon" />
+                <InputText @bind-Value="user.Parola_hashuita" type="password" class="form-control" placeholder="Parolă" />
+
+                <button type="submit" class="btn-signup">Creează cont</button>
+            </EditForm>
+        }
+        else
+        {
+            <EditForm Model="@codModel" OnValidSubmit="VerificaCod">
+                <DataAnnotationsValidator />
+                <ValidationSummary />
+
+                <InputText @bind-Value="codModel.Cod" class="form-control" placeholder="Codul primit pe email" />
+
+                <button type="submit" class="btn-signup">Verifică și activează contul</button>
+            </EditForm>
+        }
+    </div>
+</div>
+
+@code {
+    private UserSignupModel user = new();
+    private CodModel codModel = new();
+    private string mesaj = "";
+    private bool codTrimis = false;
+
+    private Utilizatori? utilizatorNou;
+
+    private async Task HandleSignup()
+    {
+        if (await Db.Utilizatoris.AnyAsync(u => u.Email == user.Email))
+        {
+            mesaj = "Adresa de email este deja folosită.";
+            return;
+        }
+
+        if (await Db.Utilizatoris.AnyAsync(u => u.Telefon == user.Telefon))
+        {
+            mesaj = "Numărul de telefon este deja folosit.";
+            return;
+        }
+
+        var cod = new Random().Next(100000, 999999).ToString();
+
+        utilizatorNou = new Utilizatori
+        {
+            NumeComplet = user.NumeComplet,
+            Email = user.Email,
+            Telefon = user.Telefon,
+            Parola_hashuita = user.Parola_hashuita,
+            Rol = "client",
+            DataInregistrare = DateTime.Now,
+            Fotografie = "/images/default-user.png",
+            CodActivare = cod,
+            EsteActiv = false
+        };
+
+        Db.Utilizatoris.Add(utilizatorNou);
+        await Db.SaveChangesAsync();
+
+        await EmailService.TrimiteEmailActivareContAsync(user.Email, cod);
+
+        mesaj = "Cod trimis pe email. Verifică și introdu codul mai jos.";
+        codTrimis = true;
+    }
+
+    private async Task VerificaCod()
+    {
+        var userDb = await Db.Utilizatoris.FirstOrDefaultAsync(u => u.Email == user.Email);
+
+        if (userDb != null && userDb.CodActivare == codModel.Cod)
+        {
+            userDb.EsteActiv = true;
+            userDb.CodActivare = null;
+
+            Db.Update(userDb);
+            await Db.SaveChangesAsync();
+
+            mesaj = "Contul a fost activat!";
+            await Task.Delay(1500);
+            Navigation.NavigateTo("/login");
+        }
+        else
+        {
+            mesaj = "Cod incorect.";
+        }
+    }
+
+    public class CodModel
+    {
+        [Required]
+        public string Cod { get; set; } = "";
+    }
+}

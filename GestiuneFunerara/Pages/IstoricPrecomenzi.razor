@@ -1,0 +1,89 @@
+﻿@page "/istoric-precomenzi"
+@using GestiuneFunerara.Models
+@using GestiuneFunerara.Services
+@using Microsoft.EntityFrameworkCore
+@inject GestiuneFuneraraContext Db
+@inject UserSessionService Session
+@inject NavigationManager Navigation
+
+<h3 class="mb-4">📜 Istoric Precomenzi</h3>
+
+@if (!isLoaded)
+{
+    <p>Se încarcă precomenzile...</p>
+}
+else if (precomenzi.Count == 0)
+{
+    <div class="alert alert-info">Nu ai nicio precomandă înregistrată.</div>
+}
+else
+{
+    <table class="table table-hover">
+        <thead>
+            <tr>
+                <th>#</th>
+                <th>Pachet</th>
+                <th>Sicriu</th>
+                <th>Nume Defunct</th>
+                <th>Data Deces</th>
+                <th>Locație Ridicare</th>
+                <th>Stare</th>
+                <th>Data Creare</th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var p in precomenzi)
+            {
+                <tr>
+                    <td>@p.id_precomenzi</td>
+                    <td>@p.id_pachetefunerareNavigation?.Denumire</td>
+                    <td>@p.id_produsNavigation?.nume</td>
+                    <td>@p.NumeDefunct</td>
+                    <td>@(p.DataDeces?.ToString("dd/MM/yyyy") ?? "—")</td>
+                    <td>@p.LocatieRidicare</td>
+                    <td>
+                        @switch (p.Stare?.ToLower())
+                        {
+                            case "neconfirmata":
+                                <span class="badge bg-warning text-dark">Neconfirmată</span>
+                                break;
+                            case "precomanda":
+                                <span class="badge bg-primary">Precomandă</span>
+                                break;
+                            case "finalizata":
+                                <span class="badge bg-success">Finalizată</span>
+                                break;
+                            default:
+                                <span class="badge bg-secondary">@p.Stare</span>
+                                break;
+                        }
+                    </td>
+                    <td>@p.DataCreare.ToString("dd/MM/yyyy HH:mm")</td>
+                </tr>
+            }
+        </tbody>
+    </table>
+}
+
+@code {
+    private List<Precomenzi> precomenzi = new();
+    private bool isLoaded = false;
+
+    protected override async Task OnInitializedAsync()
+    {
+        if (Session.IdUtilizator == 0)
+        {
+            Navigation.NavigateTo("/login");
+            return;
+        }
+
+        precomenzi = await Db.Precomenzis
+            .Include(p => p.id_pachetefunerareNavigation)
+            .Include(p => p.id_produsNavigation)
+            .Where(p => p.id_utilizator == Session.IdUtilizator)
+            .OrderByDescending(p => p.DataCreare)
+            .ToListAsync();
+
+        isLoaded = true;
+    }
+}

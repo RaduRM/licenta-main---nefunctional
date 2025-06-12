@@ -1,0 +1,154 @@
+﻿@page "/edit-profil"
+@using GestiuneFunerara.Models
+@using GestiuneFunerara.Services
+@inject GestiuneFuneraraContext Db
+@inject UserSessionService Session
+@inject IJSRuntime JS
+@inject NavigationManager Navigation
+@inject EmailService EmailService
+
+<link href="css/editprofil.css" rel="stylesheet" />
+
+<div class="edit-profil-container">
+    <h1>Editare Profil</h1>
+
+    @if (utilizator == null)
+    {
+        <p>Se încarcă datele...</p>
+    }
+    else
+    {
+        <EditForm Model="@utilizator" OnValidSubmit="SalveazaSchimbari">
+            <DataAnnotationsValidator />
+            <ValidationSummary />
+
+            <div class="mb-3">
+                <label>Nume complet:</label>
+                <InputText class="form-control" @bind-Value="utilizator.NumeComplet" />
+            </div>
+
+            <div class="mb-3">
+                <label>Email:</label>
+                <InputText class="form-control" @bind-Value="utilizator.Email" />
+            </div>
+
+            <div class="mb-3">
+                <label>Telefon:</label>
+                <InputText class="form-control" @bind-Value="utilizator.Telefon" />
+            </div>
+
+            <div class="mb-3 text-center">
+    <label class="form-label">Imagine profil:</label>
+    <InputFile OnChange="HandleFileSelected" class="form-control" />
+    @if (!string.IsNullOrEmpty(utilizator.Fotografie))
+    {
+        <img src="@utilizator.Fotografie" alt="Imagine Profil" class="profile-image-preview" />
+    }
+</div>
+
+
+            <button type="submit" class="btn btn-primary w-100">💾 Salvează</button>
+        </EditForm>
+
+        <div class="section-divider"> </div>
+
+        <h3>🔒 Schimbare parolă</h3>
+        <div class="mb-3">
+            <button class="btn btn-secondary w-100" @onclick="TrimiteCodSchimbareParola">Trimite cod de confirmare</button>
+        </div>
+
+        @if (!string.IsNullOrEmpty(codTrimis))
+        {
+            <EditForm Model="@modelSchimbareParola" OnValidSubmit="SchimbaParola">
+                <DataAnnotationsValidator />
+                <ValidationSummary />
+
+                <div class="mb-3">
+                    <label>Cod confirmare:</label>
+                    <InputText class="form-control" @bind-Value="modelSchimbareParola.CodConfirmare" />
+                </div>
+
+                <div class="mb-3">
+                    <label>Parolă nouă:</label>
+                    <InputText type="password" class="form-control" @bind-Value="modelSchimbareParola.ParolaNoua" />
+                </div>
+
+                <button type="submit" class="btn btn-success w-100">🔑 Schimbă parola</button>
+            </EditForm>
+        }
+    }
+</div>
+
+@code {
+    private Utilizatori? utilizator;
+    private string codTrimis = "";
+    private SchimbareParolaModel modelSchimbareParola = new();
+
+    public class SchimbareParolaModel
+    {
+        public string CodConfirmare { get; set; }
+        public string ParolaNoua { get; set; }
+    }
+
+    protected override async Task OnInitializedAsync()
+    {
+
+        utilizator = await Db.Utilizatoris.FindAsync(Session.IdUtilizator);
+    }
+
+    private async Task SalveazaSchimbari()
+    {
+        if (utilizator != null)
+        {
+            await Db.SaveChangesAsync();
+
+            Session.NumeComplet = utilizator.NumeComplet;
+            Session.ImagineProfil = utilizator.Fotografie ?? "/images/Sample_User_Icon.png";
+            await Session.SaveSessionAsync(JS);
+
+            await JS.InvokeVoidAsync("alert", "Modificările au fost salvate!");
+            Navigation.NavigateTo("/edit-profil");
+
+        }
+    }
+
+    private async Task TrimiteCodSchimbareParola()
+    {
+        codTrimis = new Random().Next(100000, 999999).ToString();
+        await EmailService.TrimiteEmailResetareAsync(utilizator.Email, codTrimis);
+        await JS.InvokeVoidAsync("alert", "Codul de confirmare a fost trimis pe email!");
+    }
+
+    private async Task SchimbaParola()
+    {
+        if (modelSchimbareParola.CodConfirmare == codTrimis && !string.IsNullOrEmpty(modelSchimbareParola.ParolaNoua))
+        {
+            var user = await Db.Utilizatoris.FindAsync(Session.IdUtilizator);
+            if (user != null)
+            {
+                user.Parola_hashuita = modelSchimbareParola.ParolaNoua;
+                await Db.SaveChangesAsync();
+                await JS.InvokeVoidAsync("alert", "Parola a fost schimbată cu succes!");
+                codTrimis = "";
+                modelSchimbareParola = new();
+            }
+        }
+        else
+        {
+            await JS.InvokeVoidAsync("alert", "Cod greșit sau parolă lipsă!");
+        }
+    }
+
+    private async Task HandleFileSelected(InputFileChangeEventArgs e)
+    {
+        var file = e.File;
+        if (file != null)
+        {
+            var buffer = new byte[file.Size];
+            await file.OpenReadStream().ReadAsync(buffer);
+            var base64 = Convert.ToBase64String(buffer);
+            utilizator.Fotografie = $"data:{file.ContentType};base64,{base64}";
+            await JS.InvokeVoidAsync("alert", "Imaginea a fost încărcată local!");
+        }
+    }
+}

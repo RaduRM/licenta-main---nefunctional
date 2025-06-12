@@ -1,0 +1,110 @@
+﻿﻿@using GestiuneFunerara.Models
+@using GestiuneFunerara.Services
+@inherits LayoutComponentBase
+@inject UserSessionService Session
+@inject NavigationManager Navigation
+@inject IJSRuntime JS
+@inject GestiuneFuneraraContext Db
+
+<header>
+    <nav class="navbar navbar-expand-lg navbar-dark bg-dark px-4">
+        <a class="navbar-brand d-flex align-items-center" href="/">
+            <img src="/images/logo-1.png" alt="Memorial Logo" style="height: 40px; margin-right: 10px;" />
+            <span style="font-size: 1.4rem;">Memorial</span>
+        </a>
+
+        <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navMenu"
+                aria-controls="navMenu" aria-expanded="false" aria-label="Toggle navigation">
+            <span class="navbar-toggler-icon"></span>
+        </button>
+
+        <div class="collapse navbar-collapse" id="navMenu">
+            @if (Session.NumeComplet != null)
+            {
+                <div class="d-flex align-items-center ms-auto">
+                    @if (Session.Rol?.Trim().ToLower() == "admin" || Session.Rol?.Trim().ToLower() == "manager")
+                    {
+                        <span class="text-white me-2">Admin, ai putere, umbla cu grijă:</span>
+                        <a class="btn btn-vezi-pachete me-3" href="/admin-dashboard">
+                            Dashboard
+                        </a>
+                    }
+
+
+                    <div class="dropdown me-3">
+                        <span class="text-white dropdown-toggle" data-bs-toggle="dropdown" aria-expanded="false" style="cursor: pointer;">
+                            Salut, @Session.NumeComplet
+                        </span>
+                        <ul class="dropdown-menu dropdown-menu-end">
+                            <li>
+                                <a class="dropdown-item" href="/edit-profil">Editare profil</a>
+                            </li>
+                            <li>
+                                <button class="dropdown-item text-danger" @onclick="HandleLogout">Logout</button>
+                            </li>
+                        </ul>
+                    </div>
+
+                    @if (Session.ImagineProfil != null)
+                    {
+                        <img src="@Session.ImagineProfil" alt="Imagine Profil" style="width: 36px; height: 36px; border-radius: 50%;" class="me-3" />
+                    }
+                    else
+                    {
+                        <img src="/images/Sample_User_Icon.png" alt="Imagine Profil" style="width: 36px; height: 36px; border-radius: 50%;" class="me-3" />
+                    }
+
+
+
+                </div>
+            }
+            else
+            {
+                <ul class="navbar-nav ms-auto">
+                    <li class="nav-item">
+                        <NavLink class="nav-link" href="/login">Login</NavLink>
+                    </li>
+                    <li class="nav-item">
+                        <NavLink class="nav-link" href="/signup">Înregistrare</NavLink>
+                    </li>
+                </ul>
+            }
+        </div>
+    </nav>
+</header>
+
+<main class="container mt-4">
+    @Body
+</main>
+
+<footer class="memorial-footer text-center">
+    <div class="container">
+        <p><strong>Casa Funerară Memorial</strong></p>
+        <p>📍 Șoseaua Mihai Bravu 380, București</p>
+        <p>☎️ 0770 875 934 – Servicii disponibile NON-STOP</p>
+        <p>☎️ radurm2@gmail.com – Servicii disponibile NON-STOP</p>
+        <p class="text-muted small">© @DateTime.Now.Year Casa Funerară Memorial. Toate drepturile rezervate.</p>
+    </div>
+</footer>
+
+@code {
+    private bool sessionLoaded = false;
+
+    protected override async Task OnAfterRenderAsync(bool firstRender)
+    {
+        if (firstRender && !sessionLoaded)
+        {
+            await Session.LoadSessionAsync(JS);
+            sessionLoaded = true;
+
+            StateHasChanged(); // ⚠️ se forteaza refresh cu noile date de sesiune
+        }
+    }
+
+    private async void HandleLogout()
+    {
+        await Session.ClearSessionAsync(JS);
+        Session.Logout();
+        Navigation.NavigateTo("/login", true); // reload complet
+    }
+}

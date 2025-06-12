@@ -1,0 +1,216 @@
+﻿@page "/"
+@using GestiuneFunerara.Services
+@using GestiuneFunerara.Models
+@using Microsoft.EntityFrameworkCore
+@inject UserSessionService Session
+@inject GestiuneFuneraraContext Db
+@inject IJSRuntime JS
+@inject NavigationManager Navigation
+
+<link href="/css/index.css" rel="stylesheet" />
+
+<div class="home-header text-center">
+    <img src="/images/logo-1.png" alt="Memorial Logo" class="home-logo" />
+    <h1>Casa Funerară Memorial</h1>
+    <p class="lead">Servicii funerare complete, non-stop</p>
+</div>
+
+@if (Session == null || Session.NumeComplet == null)
+{
+    <div class="promo-message text-center my-4" style="font-size: 24px;">
+        <strong>Dacă vă creați un cont, vă oferim 10% reducere la serviciile noastre! <br /></strong>
+        <br />
+        <a class="btn btn-vezi-pachete" href="/signup">Creează-ți contul</a>
+    </div>
+}
+
+@if (Session != null && Session.NumeComplet != null)
+{
+    <!-- mesaj de bun venit -->
+    <section class="welcome-card text-center">
+        <h2>Bine ai venit, <span class="user-name">@Session.NumeComplet!</span></h2>
+        <p>Suntem alături de tine pentru a-ți oferi sprijin și servicii de calitate în momente dificile.</p>
+    </section>
+}
+
+<!-- Mesajul de notificare pentru utilizatorii nelogați -->
+@if (showNotification)
+{
+    <div class="alert alert-warning text-center fixed-top" role="alert" style="z-index: 9999; top: 0; width: 100%;">
+        Trebuie să fii înregistrat înainte să faci o precomandă. <strong><a href="/register" class="alert-link">Înregistrează-te acum</a></strong>.
+    </div>
+}
+
+<section class="descriere-memorial container">
+    <div class="row align-items-center">
+        <div class="col-md-6 text-side">
+            <p>
+                Serviciile noastre funerare disponibile non-stop sunt gândite special pentru a susține familiile aflate în cele mai grele momente ale vieții.
+                Înțelegem cât de profundă este pierderea unei persoane dragi și ne asumăm responsabilitatea de a vă sprijini cu seriozitate, profesionalism și empatie.
+            </p>
+            <p>
+                Cu o echipă formată din specialiști cu vastă experiență în organizarea ceremoniilor funerare, ne asigurăm că fiecare detaliu reflectă respectul și personalitatea celui trecut în neființă.
+            </p>
+            <p>
+                Oferim servicii complete – de la consultanță și documente, până la organizarea ceremoniei și, dacă este nevoie, incinerare – totul în funcție de bugetul și dorințele dumneavoastră.
+            </p>
+            <button class="btn btn-vezi-pachete mt-3" @onclick="ScrollCuNavigare">Vezi Pachetele funerare</button>
+        </div>
+
+        <div class="col-md-6 text-center">
+            <img src="/images/pozadescriere.jpg" alt="Imagine descriere" class="descriere-img" />
+        </div>
+    </div>
+</section>
+
+<section class="faq-tabs container my-5">
+    <h2 class="text-center">Casa Funerară Memorial</h2>
+    <p class="text-center text-muted">Întrebări frecvente</p>
+
+    <!-- categorii faq -->
+    <div class="text-center my-4">
+        @foreach (var c in categorii)
+        {
+            <button class="tab-btn @(categorieActiva == c ? "active" : "")"
+                    @onclick="() => SelecteazaCategorie(c)">
+                @c
+            </button>
+        }
+    </div>
+
+    <p class="text-center text-muted mb-4">@DescriereCategorie</p>
+
+    <!-- întrebări -->
+    <div class="accordion" id="faqAccordion">
+        @foreach (var faq in FaquriFiltrate)
+        {
+            var id = faq.Intrebare.Replace(" ", "").Replace("?", "").ToLower();
+            <div class="accordion-item mb-2">
+                <h2 class="accordion-header" id="heading-@id">
+                    <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse"
+                            data-bs-target="#collapse-@id" aria-expanded="false" aria-controls="collapse-@id">
+                        @faq.Intrebare
+                    </button>
+                </h2>
+                <div id="collapse-@id" class="accordion-collapse collapse" aria-labelledby="heading-@id"
+                     data-bs-parent="#faqAccordion">
+                    <div class="accordion-body">
+                        @faq.Raspuns
+                    </div>
+                </div>
+            </div>
+        }
+    </div>
+</section>
+
+<!-- Secțiunea de pachete funerare disponibilă pentru toți utilizatorii -->
+<section id="pachete" class="container package-section my-5">
+    <h2 class="text-center mb-4">Pachete funerare</h2>
+
+    @if (pachete.Any())
+    {
+        <div class="row justify-content-center">
+            @foreach (var pachet in pachete)
+            {
+                <div class="col-md-4 mb-4 fade-in">
+                    <a href="javascript:void(0);" class="image-link" @onclick="() => HandlePachetClick(pachet.id_pachetefunerare)">
+                        <img src="@pachet.ImagineURL" alt="@pachet.Denumire" class="pachet-img-btn" />
+                    </a>
+                </div>
+            }
+        </div>
+    }
+    else
+    {
+        <p class="text-center text-muted">Nu există pachete disponibile momentan.</p>
+    }
+</section>
+
+@code {
+    private List<PacheteFunerare> pachete = new();
+    private List<string> categorii = new() { "Deces acasă", "Deces spital", "Ajutor deces" };
+    private string categorieActiva = "Deces acasă";
+    private bool sessionLoaded = false;
+    private bool showNotification = false;
+
+    protected override async Task OnInitializedAsync()
+    {
+        pachete = await Db.PacheteFunerares.ToListAsync();
+    }
+
+    protected override async Task OnAfterRenderAsync(bool firstRender)
+    {
+        if (firstRender && !sessionLoaded)
+        {
+            await Session.LoadSessionAsync(JS);
+            sessionLoaded = true;
+            StateHasChanged();
+        }
+    }
+
+    private void SelecteazaCategorie(string categorie) => categorieActiva = categorie;
+
+    private List<FaqItem> toateFaqurile = new()
+    {
+        new FaqItem("Deces acasă", "Cum se procedează dacă decesul are loc acasă?", "Se sună la 112 sau la un medic care poate constata decesul și elibera documentele necesare."),
+        new FaqItem("Deces acasă", "Aveți transport funerar inclus?", "Da, pachetele noastre includ transportul sicriului către capelă, biserică sau cimitir."),
+        new FaqItem("Deces spital", "Cine eliberează certificatul de deces?", "În spital, certificatul medical este emis de către medicul curant sau de gardă."),
+        new FaqItem("Deces spital", "Ce documente primesc de la spital?", "Certificatul medical constatator, bilet de externare și, uneori, dovada autopsiei."),
+        new FaqItem("Ajutor deces", "Se oferă sprijin pentru ajutorul de înmormântare?", "Da, vă oferim consultanță pentru obținerea ajutorului de deces prin Casa de Pensii sau AJOFM."),
+        new FaqItem("Ajutor deces", "Ce acte trebuie depuse pentru ajutor?", "Act de identitate, certificatul de deces, cererea și alte documente necesare.")
+    };
+
+    private List<FaqItem> FaquriFiltrate => toateFaqurile
+        .Where(f => f.Categorie == categorieActiva)
+        .ToList();
+
+    public class FaqItem
+    {
+        public string Categorie { get; }
+        public string Intrebare { get; }
+        public string Raspuns { get; }
+
+        public FaqItem(string categorie, string intrebare, string raspuns)
+        {
+            Categorie = categorie;
+            Intrebare = intrebare;
+            Raspuns = raspuns;
+        }
+    }
+
+    private string DescriereCategorie => categorieActiva switch
+    {
+        "Deces acasă" => "Procedurile pentru decesul survenit la domiciliu și pașii necesari.",
+        "Deces spital" => "Cum se gestionează actele și formalitățile în cazul unui deces în unități medicale.",
+        "Ajutor deces" => "Informații despre sprijinul financiar și documentele necesare.",
+        _ => ""
+    };
+
+    private async Task ScrollCuNavigare()
+    {
+        Navigation.NavigateTo("#pachete", forceLoad: false);
+        await Task.Delay(50);
+        await JS.InvokeVoidAsync("scrollToPachete");
+    }
+
+    // Funcția care gestionează click-ul pe un pachet
+    private void HandlePachetClick(int pachetId)
+    {
+        if (Session == null || Session.NumeComplet == null)
+        {
+            // Afișăm notificarea pentru utilizatorii nelogați
+            showNotification = true;
+
+            // După câteva secunde redirecționăm utilizatorul la pagina de înregistrare
+            Task.Delay(3000).ContinueWith(_ =>
+            {
+                Navigation.NavigateTo("/signup");
+            });
+        }
+        else
+        {
+            // Dacă utilizatorul este logat, poate accesa detaliile pachetului
+            Navigation.NavigateTo($"/detalii-pachet/{pachetId}");
+        }
+    }
+}
